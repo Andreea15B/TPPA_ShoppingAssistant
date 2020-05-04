@@ -20,27 +20,63 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    TextView textName, textCategory, textAmount;
     ArrayList<Product> products = new ArrayList<>();
     ListView products_list;
+    String[] categories = {"All", "Fruits & Vegetables", "Diary", "Beauty & Skincare", "Books", "Meat & Seafood", "Cleaning", "Beverages", "Pets", "Other", "Kids", "Bread & Cereal", "Condiments & Spices", "Baking", "Pasta & Rice", "Snacks", "Health", "Household"};
+    ArrayAdapter<Product> adapter;
+
+    private void initializeViews() {
+        Spinner mySpinner = findViewById(R.id.btn_filter);
+        mySpinner.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, categories));
+
+        products_list = findViewById(R.id.productsList);
+        products_list.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, products));
+
+        mySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if(position >= 0 && position < categories.length) {
+                    getSelectedCategoryData(categories[position]);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        initializeViews();
 
-        textName = findViewById(R.id.textName);
-        textCategory = findViewById(R.id.textCategory);
-        textAmount = findViewById(R.id.textAmount);
         products_list = findViewById(R.id.productsList);
 
         Product p = new Product("ProductName_default", "ProductCategory_default", 10);
         products.add(p);
 
-        // Create the adapter to convert the array to views
         ProductAdapter adapter = new ProductAdapter(this, products);
         products_list.setAdapter(adapter);
 
+    }
+
+    private void getSelectedCategoryData(String category) {
+        ArrayList<Product> products = new ArrayList<>();
+        if (category == "All") {
+            adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, products);
+        }
+        else {
+            for(Product product : products) {
+                if(product.getCategory().equals(category)) {
+                    products.add(product);
+                }
+            }
+            adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, products);
+        }
+        products_list.setAdapter(adapter);
     }
 
 
