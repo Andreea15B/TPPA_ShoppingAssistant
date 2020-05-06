@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,95 +8,123 @@
     tools:context=".MainActivity"
     android:id="@+id/activity_main">
 
+    <!-- All except bottom nav menu -->
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <Button
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <!-- Add button and Filter -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/btn_add_product"
-            android:background="@drawable/round_button"
-            android:text="+ Add Item"
-            android:textSize="20sp"
-            android:paddingHorizontal="50dp"
-            android:paddingVertical="10dp"
-            android:onClick="addProduct"
-            android:layout_gravity="center">
-        </Button>
+            android:orientation="horizontal"
+            android:padding="10dp"
+            android:background="#f0f0f0">
+            <Button
+                android:background="@drawable/round_button"
+                android:id="@+id/btn_add_product"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:textColor="#4BB3C9"
+                android:onClick="addProduct"
+                android:paddingHorizontal="50dp"
+                android:paddingVertical="10dp"
+                android:text="+ Add Item"
+                android:textAllCaps="false"
+                android:textSize="20sp"
+                android:layout_marginRight="10dp"></Button>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginLeft="10dp">
-
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Filter">
-            </TextView>
+                android:orientation="vertical">
 
-            <Spinner
-                android:id="@+id/btn_filter"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:entries="@array/TypeForFilter">
-            </Spinner>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Filter"
+                    android:textSize="20sp"
+                    android:textColor="#000"></TextView>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#fff">
+                    <Spinner
+                        android:id="@+id/btn_filter"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:entries="@array/TypeForFilter"
+                        android:textSize="20sp"
+                        style="@style/Widget.AppCompat.DropDownItem.Spinner">
+                    </Spinner>
+                </LinearLayout>
+            </LinearLayout>
         </LinearLayout>
 
+        <!-- Header -->
+        <LinearLayout
+            style="?android:attr/listSeparatorTextViewStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#757678"
+            android:orientation="horizontal"
+            android:padding="10dp"
+            android:textColor="#f5c227">
+
+            <RelativeLayout
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.3">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Category"></TextView>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Product"></TextView>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.2">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Amount"></TextView>
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <!-- the products list -->
+        <ListView
+            android:id="@+id/productsList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </ListView>
     </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        style="?android:attr/listSeparatorTextViewStyle"
-        android:background="#757678"
-        android:textColor="#f5c227"
-        android:padding="10dp">
-
-        <RelativeLayout
-            android:layout_weight="0.3"
-            android:layout_width="0dip"
-            android:layout_height="wrap_content">
-            <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="Category">
-            </TextView>
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_weight="0.5"
-            android:layout_width="0dip"
-            android:layout_height="wrap_content">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Product">
-            </TextView>
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_weight="0.2"
-            android:layout_width="0dip"
-            android:layout_height="wrap_content">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Amount">
-            </TextView>
-        </RelativeLayout>
-
-    </LinearLayout>
-
-    <ListView
-        android:id="@+id/productsList"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    </ListView>
 
     <include layout="@layout/item_details_layout" />
 
-</LinearLayout>
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#fff"
+        android:layout_gravity="bottom"
+        android:layout_alignParentBottom="true"
+        app:menu="@menu/bottom_navigation_menu" />
+
+</RelativeLayout>
