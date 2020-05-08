@@ -1,19 +1,23 @@
 package com.example.andreea.shoppingassistant;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,8 +55,29 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.mylist_layout);
         initializeViews();
+
+//        BottomNavigationView bottomNavigation = findViewById(R.id.bottom_navigation);
+//        bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+//            @Override
+//            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+//                Fragment selectedFragment = null;
+//
+//                switch (item.getItemId()) {
+//                    case R.id.page_list:
+//                        Toast.makeText(MainActivity.this, "My List", Toast.LENGTH_SHORT).show();
+//                        selectedFragment = new MyListFragment();
+//                        break;
+//                    case R.id.page_stores:
+//                        Toast.makeText(MainActivity.this, "Stores", Toast.LENGTH_SHORT).show();
+//                        selectedFragment = new StoresFragment();
+//                        break;
+//                }
+//                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
+//                return true;
+//            }
+//        });
 
         Product p = new Product("ProductName_default", "ProductCategory_default", 10);
         products.add(p);
@@ -123,5 +148,10 @@ public class MainActivity extends AppCompatActivity {
         });
 
         builder.show();
+    }
+
+    public void showStores(View view) {
+        Intent intent = new Intent(this, DisplayStores.class);
+        startActivity(intent);
     }
 }

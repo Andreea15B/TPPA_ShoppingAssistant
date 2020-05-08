@@ -6,13 +6,20 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".MainActivity"
-    android:id="@+id/activity_main">
+    android:id="@+id/mylist_layout">
 
     <!-- All except bottom nav menu -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="See stores"
+            android:onClick="showStores">
+        </Button>
 
         <!-- Add button and Filter -->
         <LinearLayout
@@ -27,12 +34,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:textColor="#4BB3C9"
-                android:onClick="addProduct"
                 android:paddingHorizontal="50dp"
                 android:paddingVertical="10dp"
                 android:text="+ Add Item"
+                android:onClick="addProduct"
                 android:textAllCaps="false"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:layout_marginRight="10dp"></Button>
 
             <LinearLayout
@@ -44,7 +51,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Filter"
-                    android:textSize="20sp"
+                    android:textSize="18sp"
                     android:textColor="#000"></TextView>
 
                 <LinearLayout
@@ -56,7 +63,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:entries="@array/TypeForFilter"
-                        android:textSize="20sp"
+                        android:textSize="28sp"
                         style="@style/Widget.AppCompat.DropDownItem.Spinner">
                     </Spinner>
                 </LinearLayout>
@@ -118,13 +125,13 @@
 
     <include layout="@layout/item_details_layout" />
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottom_navigation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#fff"
-        android:layout_gravity="bottom"
-        android:layout_alignParentBottom="true"
-        app:menu="@menu/bottom_navigation_menu" />
+<!--    <com.google.android.material.bottomnavigation.BottomNavigationView-->
+<!--        android:id="@+id/bottom_navigation"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:background="#fff"-->
+<!--        android:layout_gravity="bottom"-->
+<!--        android:layout_alignParentBottom="true"-->
+<!--        app:menu="@menu/bottom_navigation_menu" />-->
 
 </RelativeLayout>

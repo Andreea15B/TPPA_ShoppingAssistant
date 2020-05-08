@@ -3,6 +3,7 @@ package com.example.andreea.shoppingassistant;
 public class Product {
     public String name, category;
     public int amount;
+
     Product(String name, String category, int amount) {
         this.name = name;
         this.category = category;
