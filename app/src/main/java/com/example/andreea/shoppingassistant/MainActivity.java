@@ -1,14 +1,16 @@
 package com.example.andreea.shoppingassistant;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 import android.app.AlertDialog;
+import android.app.Notification;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
-import android.view.MenuItem;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -17,14 +19,14 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-
 import java.util.ArrayList;
-import java.util.List;
+
+import static com.example.andreea.shoppingassistant.MyApplication.CHANNEL_1_ID;
+import static com.example.andreea.shoppingassistant.MyApplication.stores;
 
 public class MainActivity extends AppCompatActivity {
 
-    ArrayList<Product> products = new ArrayList<>();
+    ArrayList<Product> products_in_list = new ArrayList<>();
     ListView products_list;
     String[] categories = {"All", "Fruits & Vegetables", "Diary", "Beauty & Skincare", "Books", "Meat & Seafood", "Cleaning", "Beverages", "Pets", "Other", "Kids", "Bread & Cereal", "Condiments & Spices", "Baking", "Pasta & Rice", "Snacks", "Health", "Household"};
     ProductAdapter adapter;
@@ -34,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
         mySpinner.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, categories));
 
         products_list = findViewById(R.id.productsList);
-        adapter = new ProductAdapter(this, products);
+        adapter = new ProductAdapter(this, products_in_list);
         products_list.setAdapter(adapter);
 
         mySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -58,39 +60,24 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.mylist_layout);
         initializeViews();
 
-//        BottomNavigationView bottomNavigation = findViewById(R.id.bottom_navigation);
-//        bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-//            @Override
-//            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-//                Fragment selectedFragment = null;
-//
-//                switch (item.getItemId()) {
-//                    case R.id.page_list:
-//                        Toast.makeText(MainActivity.this, "My List", Toast.LENGTH_SHORT).show();
-//                        selectedFragment = new MyListFragment();
-//                        break;
-//                    case R.id.page_stores:
-//                        Toast.makeText(MainActivity.this, "Stores", Toast.LENGTH_SHORT).show();
-//                        selectedFragment = new StoresFragment();
-//                        break;
-//                }
-//                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
-//                return true;
-//            }
-//        });
+        Product p1 = new Product("ProductName_default", "ProductCategory_default", 10);
+        products_in_list.add(p1);
+        Product p2 = new Product("Milk", "Diary", 1);
+        products_in_list.add(p2);
+        Product p3 = new Product("Bread", "Bread & Cereal", 2);
+        products_in_list.add(p3);
 
-        Product p = new Product("ProductName_default", "ProductCategory_default", 10);
-        products.add(p);
+        notificationManager = NotificationManagerCompat.from(this);
 
     }
 
     private void getSelectedCategoryData(String category) {
         ArrayList<Product> pr = new ArrayList<>();
         if (category == "All") {
-            adapter = new ProductAdapter(this, products);
+            adapter = new ProductAdapter(this, products_in_list);
         }
         else {
-            for(Product product : products) {
+            for(Product product : products_in_list) {
                 if(product.getCategory().equals(category)) {
                     pr.add(product);
                 }
@@ -103,15 +90,15 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onRestoreInstanceState(Bundle savedInstanceState) {
-        products = (ArrayList<Product>) ((MyApplication) getApplication()).getData();
-        ProductAdapter adapter = new ProductAdapter(this, products);
+        products_in_list = (ArrayList<Product>) ((MyApplication) getApplication()).getData();
+        ProductAdapter adapter = new ProductAdapter(this, products_in_list);
         products_list.setAdapter(adapter);
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        ((MyApplication) getApplication()).storeData(products);
+        ((MyApplication) getApplication()).storeData(products_in_list);
     }
 
     public void addProduct(View view) {
@@ -134,8 +121,8 @@ public class MainActivity extends AppCompatActivity {
                 if(!name.isEmpty()) {
                     Toast.makeText(getApplicationContext(), "You added: " + name + " " + category + " " + amount, Toast.LENGTH_LONG).show();
                     Product p = new Product(name, category, amount);
-                    products.add(p);
-                    ProductAdapter adapter = new ProductAdapter(MainActivity.this, products);
+                    products_in_list.add(p);
+                    ProductAdapter adapter = new ProductAdapter(MainActivity.this, products_in_list);
                     products_list.setAdapter(adapter);
                 }
             }
@@ -153,5 +140,50 @@ public class MainActivity extends AppCompatActivity {
     public void showStores(View view) {
         Intent intent = new Intent(this, DisplayStores.class);
         startActivity(intent);
+    }
+
+    private NotificationManagerCompat notificationManager;
+    public void sendNotification(Store store, ArrayList<Product> products_to_display, int id) {
+        String products_message = "You can find these items here: ";
+        for(Product product : products_to_display) {
+            products_message += product.getName() + ", ";
+        }
+        products_message = products_message.substring(0, products_message.length()-2);
+        Log.i("sendNotification", products_message);
+
+        Notification notification = new NotificationCompat.Builder(this, CHANNEL_1_ID)
+                .setSmallIcon(R.drawable.ic_shoppingcart_icon)
+                .setContentTitle("You are near " + store.getName())
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(products_message))
+                .build();
+        notificationManager.notify(id, notification);
+    }
+
+    public void findNearStores(View view) {
+        MyLocation g = new MyLocation(getApplicationContext());
+        Location currentLocation = g.getLocation();
+
+        int id = 1;
+        double distance;
+        for(Store store: stores) {
+            Location storeLocation = store.getLocation();
+            distance = currentLocation.distanceTo(storeLocation)/1000; // in km
+            if(distance < 100) {
+                ArrayList<Product> products_in_store = store.getProducts_in_store();
+                ArrayList<Product> products_from_list_in_store = new ArrayList<>();
+                for(Product product_in_list : products_in_list) {
+                    for(Product prod_in_store: products_in_store) {
+                        if(prod_in_store.getName().equals(product_in_list.getName()))
+                            products_from_list_in_store.add(product_in_list);
+                    }
+                }
+                if(!products_from_list_in_store.isEmpty())
+                    sendNotification(store, products_from_list_in_store, id++);
+
+                products_from_list_in_store.clear();
+            }
+        }
     }
 }

@@ -2,6 +2,8 @@ package com.example.andreea.shoppingassistant;
 
 import android.location.Location;
 import android.provider.Settings;
+import android.util.Log;
+import android.widget.Toast;
 
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
@@ -16,12 +18,11 @@ public class Store {
 
     Store(String name, ArrayList<Product> products_in_store, Location location, Random randomizer) {
         this.name = name;
-        this.products_in_store = products_in_store;
+        this.products_in_store = new ArrayList<>(products_in_store);
         this.location = new Location(location);
 
         this.randomizer = randomizer;
-
-        int randomValue = randomizer.nextInt(90);
+        double randomValue = randomizer.nextDouble()/10;
         this.location.setLatitude(location.getLatitude() + randomValue);
         this.location.setLongitude(location.getLongitude() + randomValue);
     }
@@ -44,6 +45,10 @@ public class Store {
         DecimalFormat df = new DecimalFormat("#.###");
         df.setRoundingMode(RoundingMode.CEILING);
         return df.format(location.getLongitude());
+    }
+
+    public Location getLocation() {
+        return location;
     }
 
     @Override
