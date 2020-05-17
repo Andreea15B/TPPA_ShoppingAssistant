@@ -25,6 +25,7 @@ import static com.example.andreea.shoppingassistant.MyApplication.CHANNEL_1_ID;
 import static com.example.andreea.shoppingassistant.MyApplication.stores;
 
 public class MainActivity extends AppCompatActivity {
+    static MainActivity instance;
 
     ArrayList<Product> products_in_list = new ArrayList<>();
     ListView products_list;
@@ -69,6 +70,12 @@ public class MainActivity extends AppCompatActivity {
 
         notificationManager = NotificationManagerCompat.from(this);
 
+        instance = this;
+
+    }
+
+    public static MainActivity getInstance() {
+        return instance;
     }
 
     private void getSelectedCategoryData(String category) {
@@ -149,28 +156,29 @@ public class MainActivity extends AppCompatActivity {
             products_message += product.getName() + ", ";
         }
         products_message = products_message.substring(0, products_message.length()-2);
-        Log.i("sendNotification", products_message);
+        Log.i("sendNotification", store.getName() + products_message);
+
+        NotificationCompat.BigTextStyle bigText = new NotificationCompat.BigTextStyle();
+        bigText.bigText(products_message);
 
         Notification notification = new NotificationCompat.Builder(this, CHANNEL_1_ID)
                 .setSmallIcon(R.drawable.ic_shoppingcart_icon)
                 .setContentTitle("You are near " + store.getName())
+                .setContentText("")
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setCategory(NotificationCompat.CATEGORY_MESSAGE)
-                .setStyle(new NotificationCompat.BigTextStyle().bigText(products_message))
+                .setStyle(bigText)
                 .build();
-        notificationManager.notify(id, notification);
+         notificationManager.notify(id, notification);
     }
 
-    public void findNearStores(View view) {
-        MyLocation g = new MyLocation(getApplicationContext());
-        Location currentLocation = g.getLocation();
-
+    public void findNearStores(Location currentLocation) {
         int id = 1;
         double distance;
         for(Store store: stores) {
             Location storeLocation = store.getLocation();
             distance = currentLocation.distanceTo(storeLocation)/1000; // in km
-            if(distance < 100) {
+            if(distance < 5) {
                 ArrayList<Product> products_in_store = store.getProducts_in_store();
                 ArrayList<Product> products_from_list_in_store = new ArrayList<>();
                 for(Product product_in_list : products_in_list) {
@@ -179,8 +187,9 @@ public class MainActivity extends AppCompatActivity {
                             products_from_list_in_store.add(product_in_list);
                     }
                 }
-                if(!products_from_list_in_store.isEmpty())
+                if(!products_from_list_in_store.isEmpty()) {
                     sendNotification(store, products_from_list_in_store, id++);
+                }
 
                 products_from_list_in_store.clear();
             }

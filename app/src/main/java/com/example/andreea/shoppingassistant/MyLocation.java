@@ -7,6 +7,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
@@ -36,7 +37,16 @@ public class MyLocation implements LocationListener {
     }
 
     @Override
-    public void onLocationChanged(Location location) {}
+    public void onLocationChanged(Location location) {
+        double latitude = location.getLatitude();
+        double longitude = location.getLongitude();
+        String msg = "New Latitude: "+latitude + "New Longitude: "+longitude;
+        Log.i("locationChanged", msg);
+
+        MainActivity mainActivity = MainActivity.getInstance();
+        mainActivity.findNearStores(location);
+
+    }
 
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) {}

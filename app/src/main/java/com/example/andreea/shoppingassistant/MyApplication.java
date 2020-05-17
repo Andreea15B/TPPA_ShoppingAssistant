@@ -46,7 +46,6 @@ public class MyApplication extends Application {
     }
 
     public void populateStores() {
-
         MyLocation g = new MyLocation(getApplicationContext());
         Location loc = g.getLocation();
 
