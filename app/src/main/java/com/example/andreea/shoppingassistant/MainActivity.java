@@ -14,8 +14,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -43,15 +46,12 @@ public class MainActivity extends AppCompatActivity {
         mySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if(position >= 0 && position < categories.length) {
+                if(position >= 0 && position < categories.length)
                     getSelectedCategoryData(categories[position]);
-                }
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
+            public void onNothingSelected(AdapterView<?> parent) {}
         });
     }
 
@@ -61,11 +61,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.mylist_layout);
         initializeViews();
 
-        Product p1 = new Product("ProductName_default", "ProductCategory_default", 10);
+        Product p1 = new Product("ProductName_default", "ProductCategory_default", 10, false);
         products_in_list.add(p1);
-        Product p2 = new Product("Milk", "Diary", 1);
+        Product p2 = new Product("Milk", "Diary", 1, false);
         products_in_list.add(p2);
-        Product p3 = new Product("Bread", "Bread & Cereal", 2);
+        Product p3 = new Product("Bread", "Bread & Cereal", 2, false);
         products_in_list.add(p3);
 
         notificationManager = NotificationManagerCompat.from(this);
@@ -127,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
 
                 if(!name.isEmpty()) {
                     Toast.makeText(getApplicationContext(), "You added: " + name + " " + category + " " + amount, Toast.LENGTH_LONG).show();
-                    Product p = new Product(name, category, amount);
+                    Product p = new Product(name, category, amount, false);
                     products_in_list.add(p);
                     ProductAdapter adapter = new ProductAdapter(MainActivity.this, products_in_list);
                     products_list.setAdapter(adapter);
@@ -142,6 +142,12 @@ public class MainActivity extends AppCompatActivity {
         });
 
         builder.show();
+    }
+
+    public void deleteProduct(Product product) {
+        products_in_list.remove(product);
+        ProductAdapter adapter = new ProductAdapter(MainActivity.this, products_in_list);
+        products_list.setAdapter(adapter);
     }
 
     public void showStores(View view) {
