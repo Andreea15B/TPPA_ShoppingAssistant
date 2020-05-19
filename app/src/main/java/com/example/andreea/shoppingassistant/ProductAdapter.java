@@ -43,14 +43,10 @@ public class ProductAdapter extends ArrayAdapter<Product> {
         myButton.setBackgroundResource(R.drawable.ic_trash_icon);
         RelativeLayout layout = convertView.findViewById(R.id.delete_button_layout);
         layout.addView(myButton);
-        final Button btn1 = convertView.findViewById(id_-1);
+//        final Button btn1 = convertView.findViewById(id_-1);
         myButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(view.getContext(),
-                        "Button clicked index = " + btn1.getId() + ", name = " + product.getName(), Toast.LENGTH_SHORT)
-                        .show();
-
                 MainActivity mainActivity = MainActivity.getInstance();
                 mainActivity.deleteProduct(product);
             }

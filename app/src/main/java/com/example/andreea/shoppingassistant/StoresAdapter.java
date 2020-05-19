@@ -5,7 +5,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -14,10 +17,11 @@ public class StoresAdapter extends ArrayAdapter<Store> {
         super(context, 0, stores);
     }
 
+    static int id_ = 0;
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         // Get the data item for this position
-        Store store = getItem(position);
+        final Store store = getItem(position);
 
         // Check if an existing view is being reused, otherwise inflate the view
         if (convertView == null)
@@ -32,6 +36,19 @@ public class StoresAdapter extends ArrayAdapter<Store> {
         textName.setText(store.getName());
         textLatitude.setText(store.getLatitude());
         textLongitude.setText(store.getLongitude());
+
+        Button myButton = new Button(getContext());
+        myButton.setId(id_++);
+        myButton.setText("See products");
+        RelativeLayout layout = convertView.findViewById(R.id.see_products_layout);
+        layout.addView(myButton);
+        myButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DisplayStores displayStoresActivity = DisplayStores.getInstance();
+                displayStoresActivity.showProductsForStore(store);
+            }
+        });
 
         // Return the completed view to render on screen
         return convertView;

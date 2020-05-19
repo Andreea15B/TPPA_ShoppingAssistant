@@ -57,10 +57,6 @@
         android:layout_width="0dip"
         android:layout_height="wrap_content"
         android:id="@+id/delete_button_layout">
-<!--        <Button-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:background="@drawable/ic_trash_icon">-->
-<!--        </Button>-->
+        <!-- Here comes the delete button dynamically added -->
     </RelativeLayout>
 </LinearLayout>
