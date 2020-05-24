@@ -33,17 +33,20 @@ public class ProductAdapter extends ArrayAdapter<Product> {
         TextView textCategory = convertView.findViewById(R.id.textCategory);
         TextView textAmount = convertView.findViewById(R.id.textAmount);
 
+        String entire_amount = Integer.toString(product.getAmount());
+        if(!product.getAmountType().equals("Other") && !product.getAmountType().equals("Type"))
+            entire_amount += " " + product.getAmountType();
+
         // Populate the data into the template view using the data object
         textName.setText(product.getName());
         textCategory.setText(product.getCategory());
-        textAmount.setText(Integer.toString(product.getAmount()));
+        textAmount.setText(entire_amount);
 
         Button myButton = new Button(getContext());
         myButton.setId(id_++);
         myButton.setBackgroundResource(R.drawable.ic_trash_icon);
         RelativeLayout layout = convertView.findViewById(R.id.delete_button_layout);
         layout.addView(myButton);
-//        final Button btn1 = convertView.findViewById(id_-1);
         myButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

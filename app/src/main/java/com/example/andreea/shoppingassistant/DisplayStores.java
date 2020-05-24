@@ -3,10 +3,11 @@ package com.example.andreea.shoppingassistant;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -46,11 +47,16 @@ public class DisplayStores extends AppCompatActivity {
 
         ArrayList<Product> productsInStore = store.getProducts_in_store();
         for(int i=0; i<productsInStore.size(); i++) {
+            String text = productsInStore.get(i).getName() + "  -  " + productsInStore.get(i).getAmount();
+            if(!productsInStore.get(i).getAmountType().equals("Other") && !productsInStore.get(i).getAmountType().equals("Type"))
+                text += " " + productsInStore.get(i).getAmountType();
+
             TextView textView = new TextView(this);
-            textView.setText(productsInStore.get(i).getName());
+            textView.setText(text);
             textView.setTextSize(19);
-            LinearLayout.LayoutParams lparams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            LinearLayout.LayoutParams lparams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             textView.setLayoutParams(lparams);
+            textView.setGravity(Gravity.CENTER);
             LinearLayout layout = mView.findViewById(R.id.seeProducts_linearLayout);
             layout.addView(textView);
         }

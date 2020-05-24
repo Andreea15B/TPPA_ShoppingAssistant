@@ -1,5 +1,7 @@
 <resources>
-    <string name="app_name">ShoppingAssistant</string>
+    <string name="app_name">Shopping Assistant</string>
+
+    <string name="amount_type_hint">Type</string>
 
     <string-array name="ItemType">
         <item>Other</item>
@@ -41,6 +43,17 @@
         <item>Snacks</item>
         <item>Health</item>
         <item>Household</item>
+    </string-array>
+
+    <string-array name="amountTypes">
+        <item>Type</item>
+        <item>litres</item>
+        <item>ml</item>
+        <item>grams</item>
+        <item>kg</item>
+        <item>boxes</item>
+        <item>tablets</item>
+        <item>Other</item>
     </string-array>
 
 </resources>

@@ -49,11 +49,11 @@ public class MyApplication extends Application {
         MyLocation g = new MyLocation(getApplicationContext());
         Location loc = g.getLocation();
 
-        Product p1 = new Product("Milk", "Diary", 10, false);
-        Product p2 = new Product("Bread", "Bread & Cereal", 20, false);
-        Product p3 = new Product("Cheese", "Diary", 15, false);
-        Product p4 = new Product("Chocolate", "Snacks", 20, false);
-        Product p5 = new Product("Chips", "Snacks", 20, false);
+        Product p1 = new Product("Milk", "Diary", 10, "boxes");
+        Product p2 = new Product("Bread", "Bread & Cereal", 20, "Other");
+        Product p3 = new Product("Cheese", "Diary", 15, "Other");
+        Product p4 = new Product("Chocolate", "Snacks", 20, "tablets");
+        Product p5 = new Product("Chips", "Snacks", 20, "Other");
         products.add(p1); products.add(p2); products.add(p3); products.add(p4); products.add(p5);
 
         Random randomizer = new Random();
@@ -61,22 +61,22 @@ public class MyApplication extends Application {
         stores.add(s1);
         products.clear();
 
-        p1 = new Product("Bread", "Bread & Cereal", 40, false);
+        p1 = new Product("Bread", "Bread & Cereal", 40, "Other");
         products.add(p1);
         randomizer.setSeed(System.currentTimeMillis()+1000);
         Store s2 = new Store("Penny Market", products, loc, randomizer);
         stores.add(s2);
         products.clear();
 
-        p1 = new Product("Pasta", "Pasta & Rice", 1, false);
+        p1 = new Product("Pasta", "Pasta & Rice", 1, "kg");
         products.add(p1);
         randomizer.setSeed(System.currentTimeMillis()+2000);
         Store s3 = new Store("Auchan", products, loc, randomizer);
         stores.add(s3);
         products.clear();
 
-        p1 = new Product("Milk", "Diary", 10, false);
-        p2 = new Product("Bread", "Bread & Cereal", 20, false);
+        p1 = new Product("Milk", "Diary", 10, "liters");
+        p2 = new Product("Bread", "Bread & Cereal", 20, "Other");
         products.add(p1); products.add(p2);
         randomizer.setSeed(System.currentTimeMillis()+3000);
         Store s4 = new Store("Selgros", products, loc, randomizer);

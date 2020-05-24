@@ -1,6 +1,8 @@
 package com.example.andreea.shoppingassistant;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,6 +40,10 @@ public class StoresAdapter extends ArrayAdapter<Store> {
         textLongitude.setText(store.getLongitude());
 
         Button myButton = new Button(getContext());
+        myButton.setBackgroundResource(R.drawable.round_button);
+        myButton.setTextColor(Color.parseColor("#4BB3C9"));
+        myButton.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+
         myButton.setId(id_++);
         myButton.setText("See products");
         RelativeLayout layout = convertView.findViewById(R.id.see_products_layout);

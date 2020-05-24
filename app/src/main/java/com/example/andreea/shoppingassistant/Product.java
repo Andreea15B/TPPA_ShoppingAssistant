@@ -1,15 +1,14 @@
 package com.example.andreea.shoppingassistant;
 
 public class Product {
-    public String name, category;
+    public String name, category, amountType;
     public int amount;
-    boolean checked;
 
-    Product(String name, String category, int amount, boolean checked) {
+    Product(String name, String category, int amount, String amountType) {
         this.name = name;
         this.category = category;
         this.amount = amount;
-        this.checked = checked;
+        this.amountType = amountType;
     }
 
     public String getName() {
@@ -24,12 +23,7 @@ public class Product {
         return amount;
     }
 
-    @Override
-    public String toString() {
-        return "Product {" +
-                "name='" + name + '\'' +
-                ", category='" + category + '\'' +
-                ", amount=" + amount +
-                '}';
+    public String getAmountType() {
+        return amountType;
     }
 }

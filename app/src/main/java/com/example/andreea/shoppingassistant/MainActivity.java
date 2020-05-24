@@ -62,11 +62,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.mylist_layout);
         initializeViews();
 
-        Product p1 = new Product("ProductName_default", "ProductCategory_default", 10, false);
-        products_in_list.add(p1);
-        Product p2 = new Product("Milk", "Diary", 1, false);
+        Product p2 = new Product("Milk", "Diary", 1, "litre");
         products_in_list.add(p2);
-        Product p3 = new Product("Bread", "Bread & Cereal", 2, false);
+        Product p3 = new Product("Bread", "Bread & Cereal", 2, "Other");
         products_in_list.add(p3);
 
         notificationManager = NotificationManagerCompat.from(this);
@@ -118,6 +116,7 @@ public class MainActivity extends AppCompatActivity {
         final EditText input_name = mView.findViewById(R.id.input_name);
         final Spinner input_category = mView.findViewById(R.id.input_type);
         final EditText input_amount = mView.findViewById(R.id.input_amount);
+        final Spinner input_amountType = mView.findViewById(R.id.amountType);
 
         builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
             @Override
@@ -125,10 +124,11 @@ public class MainActivity extends AppCompatActivity {
                 String name = input_name.getText().toString();
                 String category = input_category.getSelectedItem().toString();
                 int amount = Integer.parseInt(input_amount.getText().toString());
+                String amountType = input_amountType.getSelectedItem().toString();
 
                 if(!name.isEmpty()) {
-                    Toast.makeText(getApplicationContext(), "You added: " + name + " " + category + " " + amount, Toast.LENGTH_LONG).show();
-                    Product p = new Product(name, category, amount, false);
+//                    Toast.makeText(getApplicationContext(), "You added: " + name + " " + category + " " + amount, Toast.LENGTH_LONG).show();
+                    Product p = new Product(name, category, amount, amountType);
                     products_in_list.add(p);
                     ProductAdapter adapter = new ProductAdapter(MainActivity.this, products_in_list);
                     products_list.setAdapter(adapter);
